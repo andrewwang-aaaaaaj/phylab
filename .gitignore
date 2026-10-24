@@ -1,0 +1,30 @@
+# HarmonyOS / DevEco Studio
+.hvigor/
+.idea/
+build/
+entry/build/
+entry/.preview/
+*.hap
+*.app
+*.hsp
+*.har
+
+# Signing material — never commit
+signing/
+*.p12
+*.p7b
+*.cer
+*.csr
+*.keystore
+local.properties
+
+# Dependencies / generated
+node_modules/
+oh_modules/
+dist/
+release/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log

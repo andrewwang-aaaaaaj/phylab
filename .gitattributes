@@ -1,0 +1,15 @@
+* text=auto
+*.ets text
+*.ts text
+*.json5 text
+*.json text
+*.md text
+*.txt text
+*.svg text
+*.html text
+*.css text
+*.py text
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary

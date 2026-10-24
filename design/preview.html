@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>PhyLab UI Preview</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #F5F5F7; --surface: #FFFFFF; --high: #F5F5F7;
+    --text: #1D1D1F; --sec: #6E6E73; --mut: #86868B;
+    --line: #E5E5EA; --blue: #0071E3; --green: #34C759;
+    --orange: #FF9F0A; --pink: #FF375F; --indigo: #5856D6; --teal: #30B0C7;
+    --shadow: 0 12px 32px rgba(0,0,0,.07);
+  }
+  html, body { width: 390px; height: 844px; overflow: hidden; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", "HarmonyOS Sans SC", "Microsoft YaHei", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .screen { width: 390px; height: 844px; position: relative; overflow: hidden; }
+  .status { height: 46px; display: flex; align-items: center; justify-content: space-between; padding: 0 24px 0 26px; font-size: 12px; font-weight: 600; color: #1D1D1F; }
+  .status .right { letter-spacing: 2px; color: #1D1D1F; font-size: 11px; }
+  .content { padding: 0 20px; }
+  .topline { display: flex; align-items: flex-start; justify-content: space-between; }
+  .eyebrow { font-size: 12px; color: var(--sec); font-weight: 500; }
+  h1 { font-size: 32px; line-height: 38px; letter-spacing: -.7px; font-weight: 700; margin-top: 1px; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 7px 11px; font-size: 11px; color: var(--sec); font-weight: 500; }
+  .pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+  .sub { font-size: 13px; color: var(--mut); margin-top: 7px; }
+  .hero {
+    margin-top: 22px; height: 300px; border-radius: 28px; padding: 20px;
+    background: linear-gradient(155deg, #FFFFFF 0%, #FBFDFF 55%, #F1F7FF 100%);
+    box-shadow: 0 14px 34px rgba(0,0,0,.07); border: 1px solid #EDEDF0;
+    position: relative; overflow: hidden;
+  }
+  .hero .live { display: flex; align-items: center; justify-content: space-between; }
+  .hero .live .l { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--sec); font-weight: 500; }
+  .hero .live .l .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--blue); }
+  .hero .hz { font-size: 10px; color: var(--mut); background: #F2F2F5; padding: 3px 8px; border-radius: 5px; }
+  .hero .label { font-size: 12px; color: var(--mut); margin-top: 10px; }
+  .hero .big { display: flex; align-items: flex-end; gap: 7px; margin-top: -2px; }
+  .hero .big b { font-size: 60px; line-height: 1.06; letter-spacing: -2.8px; font-weight: 700; }
+  .hero .big span { font-size: 15px; color: var(--mut); padding-bottom: 11px; }
+  .hero .axes { display: flex; gap: 28px; margin-top: 4px; }
+  .hero .axes em { font-style: normal; font-size: 10px; color: var(--mut); display: block; }
+  .hero .axes b { font-size: 15px; font-weight: 500; color: var(--sec); display: block; margin-top: 1px; }
+  .hero .spark { position: absolute; left: 20px; right: 20px; bottom: 10px; height: 90px; }
+  .actions { display: flex; gap: 10px; margin-top: 14px; }
+  .actions .primary, .actions .secondary { flex: 1; height: 50px; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; }
+  .actions .primary { background: var(--text); color: #fff; }
+  .actions .secondary { background: var(--surface); color: var(--text); border: 1px solid var(--line); }
+  .section { display: flex; align-items: baseline; justify-content: space-between; margin: 30px 0 14px; }
+  .section h2 { font-size: 22px; font-weight: 700; letter-spacing: -.4px; }
+  .section span { font-size: 12px; color: var(--mut); }
+  .grid { display: flex; flex-wrap: wrap; justify-content: space-between; }
+  .card {
+    width: 48.2%; height: 172px; background: var(--surface); border-radius: 22px;
+    box-shadow: 0 8px 22px rgba(0,0,0,.06); padding: 15px; margin-bottom: 12px;
+    display: flex; flex-direction: column;
+  }
+  .card .top { display: flex; align-items: center; justify-content: space-between; }
+  .num { width: 32px; height: 32px; border-radius: 10px; background: var(--high); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+  .arrow { color: #B0B0B5; font-size: 20px; font-weight: 300; }
+  .card h3 { font-size: 17px; font-weight: 700; margin-top: 13px; letter-spacing: -.2px; }
+  .card p { font-size: 12px; color: var(--sec); line-height: 17px; margin-top: 4px; flex: 1; }
+  .card .formula { font: 10px/1.2 "SF Mono", Consolas, monospace; color: var(--mut); }
+  .nav {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 82px; padding: 0 12px 10px;
+    background: #FFFFFF; border-top: 1px solid var(--line);
+    display: flex;
+  }
+  .nav .item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: var(--mut); font-size: 10px; }
+  .nav .item.active { color: var(--blue); font-weight: 500; }
+  .nav svg { width: 24px; height: 24px; }
+  .cardGroup { background: var(--surface); border-radius: 22px; box-shadow: 0 8px 22px rgba(0,0,0,.06); padding: 0 16px; margin-top: 16px; }
+  .catHead { display: flex; align-items: center; justify-content: space-between; padding: 16px 0 2px; }
+  .catHead b { font-size: 14px; }
+  .catHead span { font-size: 11px; color: var(--mut); background: var(--high); border-radius: 999px; padding: 2px 8px; }
+  .srow { display: flex; align-items: center; gap: 13px; padding: 13px 0; border-bottom: 1px solid var(--line); }
+  .srow:last-child { border-bottom: 0; }
+  .sicon { width: 38px; height: 38px; border-radius: 11px; background: var(--high); display: flex; align-items: center; justify-content: center; flex: none; }
+  .sicon i { width: 9px; height: 9px; border-radius: 50%; display: block; }
+  .sinfo { flex: 1; min-width: 0; }
+  .sinfo .name { font-size: 16px; font-weight: 500; display: flex; gap: 7px; align-items: baseline; }
+  .sinfo .name em { font-style: normal; font-size: 10px; color: var(--mut); font-weight: 400; }
+  .sinfo p { font-size: 11px; color: var(--sec); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sright { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--green); }
+  .sright .chev { color: var(--mut); font-size: 18px; font-weight: 300; }
+  .srow.off { opacity: .5; }
+  .srow.off .sright { color: var(--mut); }
+  .intro { font-size: 13px; color: var(--sec); line-height: 20px; margin-top: 14px; }
+  .recCard { margin-top: 22px; background: var(--surface); border-radius: 26px; box-shadow: 0 14px 34px rgba(0,0,0,.07); padding: 20px; }
+  .recTop { display: flex; align-items: flex-start; justify-content: space-between; }
+  .recTop h2 { font-size: 20px; font-weight: 700; letter-spacing: -.3px; }
+  .recTop p { font-size: 13px; color: var(--sec); margin-top: 4px; }
+  .recState { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: var(--pink); background: var(--high); border-radius: 999px; padding: 5px 9px; }
+  .recState .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--pink); }
+  .stats { display: flex; margin-top: 16px; }
+  .stats div { flex: 1; }
+  .stats b { font-size: 40px; line-height: 1.1; font-weight: 700; letter-spacing: -1.8px; display: block; }
+  .stats b.blue { color: var(--blue); }
+  .stats em { font-style: normal; font-size: 11px; color: var(--mut); }
+  .stopBtn { margin-top: 18px; height: 50px; border-radius: 999px; background: var(--text); color: #fff; font-size: 14px; font-weight: 500; display: flex; align-items: center; justify-content: center; }
+  .note { font-size: 12px; color: var(--mut); line-height: 18px; margin-top: 12px; }
+  .hist { display: flex; align-items: baseline; justify-content: space-between; margin: 30px 0 14px; }
+  .hist h2 { font-size: 22px; font-weight: 700; letter-spacing: -.4px; }
+  .hist span { font-size: 12px; color: var(--mut); }
+  .session { background: var(--surface); border-radius: 20px; box-shadow: 0 8px 22px rgba(0,0,0,.06); padding: 18px; margin-bottom: 12px; }
+  .session .l1 { display: flex; justify-content: space-between; align-items: flex-start; }
+  .session h3 { font-size: 16px; font-weight: 500; }
+  .session p { font-size: 11px; color: var(--mut); margin-top: 4px; }
+  .csv { font-size: 10px; color: var(--sec); background: var(--high); border-radius: 999px; padding: 4px 8px; }
+  .session .meta { font-size: 11px; color: var(--sec); margin-top: 8px; }
+  .session .btns { display: flex; gap: 12px; margin-top: 12px; align-items: center; }
+  .session .exp { flex: 1; height: 40px; border-radius: 999px; background: var(--text); color: #fff; font-size: 13px; font-weight: 500; display: flex; align-items: center; justify-content: center; }
+  .session .del { color: var(--pink); font-size: 13px; }
+  .detailHead { display: flex; align-items: center; gap: 14px; }
+  .back { width: 40px; height: 40px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 300; line-height: 1; }
+  .detailHead h1 { font-size: 28px; line-height: 32px; letter-spacing: -.6px; }
+  .detailHead .en { font-size: 12px; color: var(--mut); }
+  .headline { margin-top: 18px; background: var(--surface); border-radius: 26px; box-shadow: 0 14px 34px rgba(0,0,0,.07); padding: 20px; }
+  .headline .top { display: flex; justify-content: space-between; font-size: 13px; color: var(--sec); font-weight: 500; }
+  .headline .top em { font-style: normal; font-size: 11px; color: var(--mut); font-family: "SF Mono", Consolas, monospace; }
+  .headline .val { display: flex; align-items: flex-end; gap: 8px; margin-top: 2px; }
+  .headline .val b { font-size: 54px; line-height: 1.1; letter-spacing: -2.2px; font-weight: 700; }
+  .headline .val span { font-size: 15px; color: var(--mut); padding-bottom: 10px; }
+  .headline .run { font-size: 12px; color: var(--mut); margin-top: 2px; }
+  .headline .startBtn { margin-top: 14px; height: 48px; border-radius: 999px; background: var(--text); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; }
+  .chartCard { margin-top: 14px; background: var(--surface); border-radius: 22px; box-shadow: 0 8px 22px rgba(0,0,0,.06); padding: 17px; }
+  .chartCard .ct { display: flex; justify-content: space-between; font-size: 15px; font-weight: 700; }
+  .chartCard .ct span { font-size: 11px; color: var(--mut); font-weight: 400; }
+  .chartBox { height: 190px; margin-top: 8px; }
+  .chartCard .foot { font-size: 11px; color: var(--mut); margin-top: 4px; }
+  .metricCard { margin-top: 14px; background: var(--surface); border-radius: 22px; box-shadow: 0 8px 22px rgba(0,0,0,.06); padding: 17px; }
+  .metricTop { display: flex; justify-content: space-between; font-size: 15px; font-weight: 700; }
+  .metricTop span { font-size: 11px; color: var(--green); font-weight: 400; }
+  .metrics { display: flex; flex-wrap: wrap; justify-content: space-between; margin-top: 10px; }
+  .metric { width: 48%; background: var(--high); border-radius: 14px; padding: 11px 12px; margin-bottom: 8px; }
+  .metric em { font-style: normal; font-size: 11px; color: var(--mut); display: block; }
+  .metric b { font-size: 20px; font-weight: 500; letter-spacing: -.5px; }
+  .metric b i { font-style: normal; font-size: 9px; color: var(--mut); margin-left: 2px; font-weight: 400; }
+  .info { margin-top: 12px; background: var(--surface); border-radius: 20px; box-shadow: 0 8px 22px rgba(0,0,0,.06); padding: 17px; }
+  .info h4 { font-size: 13px; color: var(--blue); font-weight: 700; }
+  .info p { font-size: 12px; color: var(--sec); line-height: 20px; margin-top: 8px; }
+  .warn { margin-top: 12px; background: #FFF8E6; border-radius: 20px; padding: 16px; font-size: 12px; color: #6E5A2E; line-height: 19px; }
+  .bottomNote { margin-top: 12px; background: var(--high); border-radius: 18px; padding: 16px; font-size: 11px; color: var(--mut); line-height: 17px; }
+</style>
+</head>
+<body>
+<div id="home" class="screen" style="display:none">
+  <div class="status"><span>9:41</span><span class="right">◒ ◉ ▮</span></div>
+  <div class="content">
+    <div class="topline">
+      <div><div class="eyebrow">PhyLab</div><h1>物理实验室</h1></div>
+      <div class="pill"><i class="dot"></i>离线</div>
+    </div>
+    <div class="sub">18 个传感器 · 实时读取</div>
+
+    <div class="hero">
+      <div class="live"><div class="l"><i class="dot"></i>实时加速度</div><span class="hz">50 Hz</span></div>
+      <div class="label">合加速度</div>
+      <div class="big"><b>9.81</b><span>m/s²</span></div>
+      <div class="axes"><div><em>X</em><b>0.21</b></div><div><em>Y</em><b>9.76</b></div><div><em>Z</em><b>0.32</b></div></div>
+      <div class="spark">
+        <svg width="100%" height="92" viewBox="0 0 312 92" preserveAspectRatio="none">
+          <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0071e3" stop-opacity=".12"/><stop offset="1" stop-color="#0071e3" stop-opacity="0"/></linearGradient></defs>
+          <path d="M0 58 C18 60 28 46 42 48 S60 68 76 60 S96 40 112 44 S130 74 148 66 S170 38 188 44 S205 70 220 64 S238 46 254 50 S276 60 292 54 S305 52 312 55 L312 92 L0 92 Z" fill="url(#g)"/>
+          <path d="M0 58 C18 60 28 46 42 48 S60 68 76 60 S96 40 112 44 S130 74 148 66 S170 38 188 44 S205 70 220 64 S238 46 254 50 S276 60 292 54 S305 52 312 55" fill="none" stroke="#0071e3" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="actions"><div class="primary">记录数据</div><div class="secondary">传感器</div></div>
+
+    <div class="section"><h2>实验</h2><span>6 个实验</span></div>
+    <div class="grid">
+      <div class="card"><div class="top"><span class="num" style="color:#0071E3">01</span><span class="arrow">›</span></div><h3>自由落体</h3><p>用加速度计捕捉失重与冲击，估算下落高度</p><div class="formula">h ≈ ½ g t²</div></div>
+      <div class="card"><div class="top"><span class="num" style="color:#34C759">02</span><span class="arrow">›</span></div><h3>单摆与振动</h3><p>从周期性加速度中提取周期与频率</p><div class="formula">T = 1/f</div></div>
+      <div class="card"><div class="top"><span class="num" style="color:#5856D6">03</span><span class="arrow">›</span></div><h3>转动实验室</h3><p>角速度、转速与累计转角</p><div class="formula">rpm = 60ω/2π</div></div>
+      <div class="card"><div class="top"><span class="num" style="color:#FF375F">04</span><span class="arrow">›</span></div><h3>磁场探针</h3><p>测量总场强，寻找铁磁材料与磁体</p><div class="formula">|B| = √(Bx²+By²+Bz²)</div></div>
+    </div>
+  </div>
+  <div class="nav">
+    <div class="item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 14h3.2l2.1-6.5L11.2 19l3.1-9 1.7 4h4.9"/></svg>实验</div>
+    <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="2.6"/><circle cx="12" cy="12" r="6.6"/><path d="M12 2.2v2M12 19.8v2M2.2 12h2M19.8 12h2" stroke-linecap="round"/></svg>传感器</div>
+    <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h11M4 12h16M4 18h8"/><circle cx="18.5" cy="6" r="1.4" fill="currentColor" stroke="none"/><circle cx="14.5" cy="18" r="1.4" fill="currentColor" stroke="none"/></svg>记录</div>
+    <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 10.6v6.2" stroke-linecap="round"/><circle cx="12" cy="7.3" r="1" fill="currentColor" stroke="none"/></svg>关于</div>
+  </div>
+</div>
+
+<div id="sensors" class="screen" style="display:none">
+  <div class="status"><span>9:41</span><span class="right">◒ ◉ ▮</span></div>
+  <div class="content">
+    <div class="topline"><div><div class="eyebrow">PhyLab</div><h1>传感器</h1></div><div class="pill"><i class="dot"></i>实时</div></div>
+    <div class="sub">12 / 18 可用</div>
+    <p class="intro">HarmonyOS 通过 @ohos.sensor 向第三方应用开放的物理量与融合量。可用性由具体机型决定。</p>
+    <div class="cardGroup">
+      <div class="catHead"><b>运动</b><span>3</span></div>
+      <div class="srow"><div class="sicon"><i style="background:#0071E3"></i></div><div class="sinfo"><div class="name">加速度计 <em>Accelerometer</em></div><p>包含重力在内的三轴加速度</p></div><div class="sright">可用<span class="chev">›</span></div></div>
+      <div class="srow"><div class="sicon"><i style="background:#0071E3"></i></div><div class="sinfo"><div class="name">线性加速度计 <em>Linear acceleration</em></div><p>系统融合去重力后的加速度</p></div><div class="sright">可用<span class="chev">›</span></div></div>
+      <div class="srow"><div class="sicon"><i style="background:#5856D6"></i></div><div class="sinfo"><div class="name">陀螺仪 <em>Gyroscope</em></div><p>测量绕三轴的角速度</p></div><div class="sright">可用<span class="chev">›</span></div></div>
+    </div>
+    <div class="cardGroup">
+      <div class="catHead"><b>姿态</b><span>4</span></div>
+      <div class="srow"><div class="sicon"><i style="background:#FF9F0A"></i></div><div class="sinfo"><div class="name">重力传感器 <em>Gravity</em></div><p>分离出的重力矢量，可计算倾角</p></div><div class="sright">可用<span class="chev">›</span></div></div>
+      <div class="srow"><div class="sicon"><i style="background:#30B0C7"></i></div><div class="sinfo"><div class="name">旋转矢量 <em>Rotation vector</em></div><p>单位四元数表示三维姿态</p></div><div class="sright">可用<span class="chev">›</span></div></div>
+      <div class="srow"><div class="sicon"><i style="background:#0071E3"></i></div><div class="sinfo"><div class="name">方向传感器 <em>Orientation</em></div><p>把姿态直接输出为欧拉角</p></div><div class="sright">可用<span class="chev">›</span></div></div>
+      <div class="srow off"><div class="sicon"><i style="background:#86868B"></i></div><div class="sinfo"><div class="name">磁场未校准 <em>Raw magnetic</em></div><p>保留零偏的原始磁场数据</p></div><div class="sright">不支持<span class="chev">›</span></div></div>
+    </div>
+    <div class="cardGroup">
+      <div class="catHead"><b>环境</b><span>5</span></div>
+      <div class="srow"><div class="sicon"><i style="background:#30B0C7"></i></div><div class="sinfo"><div class="name">气压计 <em>Barometer</em></div><p>高分辨率大气压，感知高度变化</p></div><div class="sright">可用<span class="chev">›</span></div></div>
+      <div class="srow"><div class="sicon"><i style="background:#FF9F0A"></i></div><div class="sinfo"><div class="name">环境光 <em>Ambient light</em></div><p>测量环境照度</p></div><div class="sright">可用<span class="chev">›</span></div></div>
+    </div>
+  </div>
+  <div class="nav">
+    <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 14h3.2l2.1-6.5L11.2 19l3.1-9 1.7 4h4.9"/></svg>实验</div>
+    <div class="item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="2.6"/><circle cx="12" cy="12" r="6.6"/><path d="M12 2.2v2M12 19.8v2M2.2 12h2M19.8 12h2" stroke-linecap="round"/></svg>传感器</div>
+    <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h11M4 12h16M4 18h8"/><circle cx="18.5" cy="6" r="1.4" fill="currentColor" stroke="none"/><circle cx="14.5" cy="18" r="1.4" fill="currentColor" stroke="none"/></svg>记录</div>
+    <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 10.6v6.2" stroke-linecap="round"/><circle cx="12" cy="7.3" r="1" fill="currentColor" stroke="none"/></svg>关于</div>
+  </div>
+</div>
+
+<div id="records" class="screen" style="display:none">
+  <div class="status"><span>9:41</span><span class="right">◒ ◉ ▮</span></div>
+  <div class="content">
+    <div class="topline"><div><div class="eyebrow">PhyLab</div><h1>记录</h1></div><div class="pill"><i class="dot"></i>CSV</div></div>
+    <div class="sub">3 份记录</div>
+    <div class="recCard">
+      <div class="recTop"><div><h2>正在记录</h2><p>加速度 · 陀螺仪 · 磁场 · 气压</p></div><div class="recState"><i class="dot"></i>录制中</div></div>
+      <div class="stats"><div><b class="blue">00:42.8</b><em>时长</em></div><div><b>8,574</b><em>样本</em></div></div>
+      <div class="stopBtn">停止并保存</div>
+    </div>
+    <p class="note">记录期间请保持应用在前台。屏幕熄灭或应用进入后台后，系统可能暂停传感器回调。</p>
+    <div class="hist"><h2>历史记录</h2><span>应用沙箱</span></div>
+    <div class="session"><div class="l1"><div><h3>四通道环境记录</h3><p>10-24 03:12 · 42.8 s · 8,574 样本</p></div><span class="csv">CSV</span></div><div class="meta">acceleration · gyroscope · magneticField · barometer</div><div class="btns"><div class="exp">导出 CSV</div><div class="del">删除</div></div></div>
+    <div class="session"><div class="l1"><div><h3>传感器 · 气压计</h3><p>10-24 02:58 · 18.2 s · 912 样本</p></div><span class="csv">CSV</span></div><div class="meta">barometer</div><div class="btns"><div class="exp">导出 CSV</div><div class="del">删除</div></div></div>
+  </div>
+  <div class="nav">
+    <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 14h3.2l2.1-6.5L11.2 19l3.1-9 1.7 4h4.9"/></svg>实验</div>
+    <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="2.6"/><circle cx="12" cy="12" r="6.6"/><path d="M12 2.2v2M12 19.8v2M2.2 12h2M19.8 12h2" stroke-linecap="round"/></svg>传感器</div>
+    <div class="item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h11M4 12h16M4 18h8"/><circle cx="18.5" cy="6" r="1.4" fill="currentColor" stroke="none"/><circle cx="14.5" cy="18" r="1.4" fill="currentColor" stroke="none"/></svg>记录</div>
+    <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 10.6v6.2" stroke-linecap="round"/><circle cx="12" cy="7.3" r="1" fill="currentColor" stroke="none"/></svg>关于</div>
+  </div>
+</div>
+
+<div id="experiment" class="screen" style="display:none">
+  <div class="status"><span>9:41</span><span class="right">◒ ◉ ▮</span></div>
+  <div class="content">
+    <div class="detailHead"><div class="back">‹</div><div><div class="en">FREE FALL</div><h1>自由落体</h1></div><div class="pill" style="margin-left:auto"><i class="dot"></i>采集中</div></div>
+    <div class="headline"><div class="top"><span>下落高度</span><em>h ≈ ½ g t²</em></div><div class="val"><b>0.284</b><span>m</span></div><div class="run">运行 00:12.4 · 618 样本</div><div class="startBtn" style="background:#1D1D1F">停止并保存</div></div>
+    <div class="chartCard"><div class="ct">加速度模长<span>m/s²</span></div><div class="chartBox"><svg width="100%" height="190" viewBox="0 0 320 190" preserveAspectRatio="none"><path d="M0 160 L24 158 L37 156 L43 42 L49 156 L57 158 L70 157 L80 34 L86 158 L100 156 L120 157 L140 155 L160 158 L180 156 L195 40 L200 157 L220 155 L240 157 L260 156 L280 158 L300 156 L320 157" fill="none" stroke="#0071e3" stroke-width="2" stroke-linecap="round"/></svg></div><div class="foot">曲线只保留最近 180 个点；原始数据以 200 Hz 写入 CSV。</div></div>
+    <div class="metricCard"><div class="metricTop">实验读数<span>传感器就绪</span></div><div class="metrics"><div class="metric"><em>状态</em><b style="font-size:14px;color:#0071E3">已捕获撞击</b></div><div class="metric"><em>失重时长</em><b>0.241<i>s</i></b></div><div class="metric"><em>冲击峰值</em><b style="color:#FF375F">41.7<i>m/s²</i></b></div><div class="metric"><em>采样点</em><b style="color:#6E6E73">618<i>pts</i></b></div></div></div>
+    <div class="info"><h4>实验原理</h4><p>手机自由下落时，加速度计测得的总加速度接近 0 g；落到软垫产生冲击峰值。用失重持续时间 t 估算下落高度，并反推等效重力加速度。</p></div>
+    <div class="warn">务必在厚软垫、床铺或沙发上进行，不要抛接手机，避免摔落损坏。</div>
+  </div>
+</div>
+
+<script>
+  const id = new URLSearchParams(location.search).get('screen') || 'home';
+  document.getElementById(id).style.display = 'block';
+</script>
+</body>
+</html>

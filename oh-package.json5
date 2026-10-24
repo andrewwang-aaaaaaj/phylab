@@ -1,0 +1,11 @@
+{
+  "modelVersion": "7.0.0",
+  "name": "phylab",
+  "version": "1.0.0",
+  "description": "PhyLab - HarmonyOS sensor laboratory",
+  "main": "",
+  "author": "PhyLab",
+  "license": "Apache-2.0",
+  "dependencies": {},
+  "devDependencies": {}
+}

@@ -1,0 +1,24 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "把华为手机变成随身物理实验室"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "鸿蒙传感器实验与数据记录"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "鸿蒙物理实验室"
+    },
+    {
+      "name": "reason_activity",
+      "value": "用于读取计步器，分析步频与步态"
+    },
+    {
+      "name": "reason_health",
+      "value": "用于读取心率传感器，开展生理信号实验"
+    }
+  ]
+}

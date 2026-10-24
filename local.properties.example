@@ -1,0 +1,5 @@
+# DevEco Studio manages the HarmonyOS SDK automatically.
+# Do not commit local.properties.
+#
+# If you use a custom SDK, copy this file to local.properties and set:
+# sdk.dir=/path/to/your/harmonyos/sdk
