@@ -26,6 +26,7 @@ PhyLab 的首个公开版本，面向 **HarmonyOS 7 / API 26**。
 - `PhyLab-1.0.0-appgallery.app` 是 **AppGallery 上架包**，使用 release 证书/Profile 签名，不能直接双击安装到手机。
 - 本地调试请克隆源码，用 DevEco Studio 打开并配置自动签名后 Run。
 - 仓库不包含任何证书、Profile 或私钥。
+- GitHub 附件中的 `PhyLab-1.0.0-appgallery.app.zip` 解压后得到 `.app` 文件；GitHub Releases 不允许直接上传 `.app` 扩展名，因此使用 ZIP 包装。
 
 ## 已知限制
 
