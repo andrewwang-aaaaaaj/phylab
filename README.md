@@ -4,6 +4,12 @@
 
 PhyLab 是一个为 **HarmonyOS 7（API 26）** 编写的离线传感器物理实验应用。它直接读取手机中的加速度计、陀螺仪、磁力计、重力、旋转矢量、方向、环境光、接近光等传感器，提供实时波形、6 个物理实验、四通道记录和 CSV 导出。所有计算和存储都在设备本地完成。
 
+> **📦 PhyLab 1.0.0 已发布**
+>
+> **[下载安装包与查看版本说明 →](https://github.com/andrewwang-aaaaaaj/phylab/releases/tag/v1.0.0)**
+>
+> Release 内含 `PhyLab-1.0.0-appgallery.app.zip`（解压后得到 `.app` 安装包）和完整的 1.0.0 版本特性说明。
+
 ![PhyLab 真机截图](design/real-device-preview.png)
 
 ## 特性
@@ -122,7 +128,9 @@ PhyLab/
 
 当前版本：**1.0.0**
 
-完整的版本特性见 [CHANGELOG.md](CHANGELOG.md) 和 GitHub Releases。
+完整的版本特性见 [CHANGELOG.md](CHANGELOG.md) 和 [GitHub Releases 1.0.0](https://github.com/andrewwang-aaaaaaj/phylab/releases/tag/v1.0.0)。
+
+📦 **[下载 PhyLab 1.0.0 安装包与版本说明 →](https://github.com/andrewwang-aaaaaaj/phylab/releases/tag/v1.0.0)**
 
 ## 贡献
 
